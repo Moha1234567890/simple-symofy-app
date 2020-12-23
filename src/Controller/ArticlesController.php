@@ -8,12 +8,14 @@ namespace App\Controller;
   use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
   use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+  use App\Entity\Article;
+
 
 
 class ArticlesController extends Controller{
 
 	/**
-	 *@Route("/")
+	 *@Route("/", name="home")
 	 *
 	 *@method({"Get"})
 	 */
@@ -23,8 +25,22 @@ class ArticlesController extends Controller{
 
 	public function index() {
 
-		
+		$articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
 
-		return $this->render('articles/articles.html.twig');
+		return $this->render('articles/articles.html.twig', array('articles' => $articles));
+	}
+
+
+	/**
+	 *@Route("/article/{id}", name="show")
+	 *
+	 *@method({"Get"})
+	 */
+
+	public function show($id) {
+		$article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+
+
+		return $this->render('articles/article.html.twig', array('article' => $article));
 	}
 }
